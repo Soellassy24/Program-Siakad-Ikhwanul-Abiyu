@@ -2,4 +2,4 @@
 DIbuat untuk menyelesaikan tugas Mata Kuliah Pemrograman Lanjut
 
 
-Program ini hanya dapat memasukkan dan menampilkan Mahasiswa, Dosen, dan Tendik. Adapun untuk menampilkan sks lulus, dll, belum bisa
+Program ini dapat memasukkan dan menampilkan Mahasiswa, Dosen, Tendik, dan mengeditnya. Dilengkapi login juga.
