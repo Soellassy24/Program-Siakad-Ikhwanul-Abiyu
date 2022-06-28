@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <algorithm>
 #include <vector>
 #include <set>
@@ -12,9 +13,39 @@
 #include "include/tendik.hpp"
 #include "include/matkul.hpp"
 
+const int maxYear = 9999;
+const int minYear = 1800;
+
 using namespace std;
 
 string uname = "admin", pass = "admin", unameInput, passInput;
+bool kabisatNgga(int yyInput){
+	return (((yyInput % 4 == 0) && (yyInput % 100 != 0)) || (yyInput % 400 == 0));
+}
+
+bool validasiTanggal(int ddInput, int mmInput, int yyInput){
+	if ((yyInput > maxYear) || (yyInput < minYear)) {
+		return false;
+	}
+	if ((mmInput < 1) || (mmInput > 12)){
+		return false;
+	}
+	if ((ddInput < 1) || (ddInput > 31)){
+		return false;
+	}
+	if (mmInput == 2){
+		if (kabisatNgga(yyInput)){
+			return (ddInput <= 29);
+		}else{
+			return (ddInput <= 28);
+		}
+	}
+	if ((mmInput == 4) || (mmInput == 6) || (mmInput == 9) || (mmInput == 11)){
+		return (ddInput <= 30);
+	}
+	
+	return true;
+}
 void defaultError(){
 	cout << "Pilihan tidak tersedia!" << endl;
 	sleep(3);
@@ -124,18 +155,29 @@ int main(){
 						break;
 					}
 					int pilihan;
-					bool flag = true, flagMatkul = true;
+					bool flag = true, flagMatkul = true, flagTTL = true;
+					// ofstream outfile;
+					// outfile.open("databaseMhs.txt");
 					while (flag){
 						system("cls || clear");
 						idMhs++;
 						cout << "Masukkan Nama : "; cin.ignore(); getline(cin, nama); cout << endl;
-						cout << "Masukkan TTL (dd mm yy) : "; cin >> dd >> mm >> yy; cout << endl;
+						while (flagTTL){
+							cout << "Masukkan TTL (dd mm yy) : "; cin >> dd >> mm >> yy; cout << endl;
+
+							if (validasiTanggal(dd, mm, yy)){
+								flagTTL = false;
+							}else{
+								cout << "TTL yang anda masukkan tidak valid!" << endl;
+								continue;
+							}
+						}
 						cout << "Masukkan NRP : "; cin >> nrp; cout << endl;
 						cout << "Masukkan Departemen : "; cin.ignore(); getline(cin, departemen); cout << endl;
 						cout << "Masukkan Tahun Masuk : "; cin >> tahunmasuk; cout << endl;
 						cout << "Masukkan Semester : "; cin >> semester; cout << endl << endl;
 
-						for (int i = 0; i < recMatkul.size(); i++){
+						for (long long unsigned int i = 0; i < recMatkul.size(); i++){
 							cout << recMatkul[i].getIdMatkul() << ". Nama Matkul : " << recMatkul[i].getMatkul() << endl << endl;
 						}
 						while (flagMatkul){
@@ -164,6 +206,9 @@ int main(){
 							}	
 						}
 						system("cls || clear");
+						
+						//outfile.close();
+
 						mahasiswa mhs(idMhs, nama, dd, mm, yy, nrp, departemen, tahunmasuk, semester, matkulTerambil);
 						recMhs.push_back(mhs);
 					
@@ -184,12 +229,23 @@ int main(){
 			case 2:
 				{
 					int pilihan;
-					bool flag = true;
+					bool flag = true, flagTTL = true;
 					while (flag){
 						system("cls || clear");
 						idDsn++;
 						cout << "Masukkan Nama : "; cin.ignore(); getline(cin, nama); cout << endl;
-						cout << "Masukkan TTL (dd mm yy) : "; cin >> dd >> mm >> yy; cout << endl;
+
+						while (flagTTL){
+							cout << "Masukkan TTL (dd mm yy) : "; cin >> dd >> mm >> yy; cout << endl;
+
+							if (validasiTanggal(dd, mm, yy)){
+								flagTTL = false;
+							}else{
+								cout << "TTL yang anda masukkan tidak valid!" << endl;
+								continue;
+							}
+						}
+
 						cout << "Masukkan NPP : "; cin >> npp; cout << endl;
 						cout << "Masukkan Departemen : "; cin.ignore(); getline(cin, departemen); cout << endl;
 						cout << "Masukkan Pendidikan Terakhir : "; cin.ignore(); getline(cin, pendidikan); cout << endl;
@@ -215,13 +271,24 @@ int main(){
 			case 3:
 				{
 					int pilihan;
-					bool flag = true;
+					bool flag = true, flagTTL = true;
 					while (flag)
 					{
 						system("cls || clear");
 						idTndk++;
 						cout << "Masukkan Nama : "; cin.ignore(); getline(cin, nama); cout << endl;
-						cout << "Masukkan TTL (dd mm yy) : "; cin >> dd >> mm >> yy; cout << endl;
+
+						while (flagTTL){
+							cout << "Masukkan TTL (dd mm yy) : "; cin >> dd >> mm >> yy; cout << endl;
+
+							if (validasiTanggal(dd, mm, yy)){
+								flagTTL = false;
+							}else{
+								cout << "TTL yang anda masukkan tidak valid!" << endl;
+								continue;
+							}
+						}
+
 						cout << "Masukkan NPP : "; cin >> npp; cout << endl;
 						cout << "Masukkan Unit : "; cin.ignore(); getline(cin, unit); cout << endl;
 					
@@ -256,7 +323,7 @@ int main(){
 					bool flag = true;
 					while (flag){
 						system("cls || clear");
-						for (int i = 0; i < recMhs.size(); i++){
+						for (long long unsigned int i = 0; i < recMhs.size(); i++){
 							cout << recMhs[i].getId() << ". Nama Mahasiswa : " << recMhs[i].getNama() << endl;
 							cout << "   NRP : " << recMhs[i].getNRP() << endl << endl;
 						}
@@ -330,8 +397,17 @@ int main(){
 										break;
 									case 3:
 										{
-											cout << "Masukkan TTL baru (dd mm yy) : ";
-											cin.ignore(); cin >> dd >> mm >> yy;
+											bool flagTTL = true;
+											while (flagTTL){
+												cout << "Masukkan TTL (dd mm yy) : "; cin >> dd >> mm >> yy; cout << endl;
+
+												if (validasiTanggal(dd, mm, yy)){
+													flagTTL = false;
+												}else{
+													cout << "TTL yang anda masukkan tidak valid!" << endl;
+													continue;
+												}
+											}
 											recMhs[noID-1].setTglLahir(dd,mm,yy);
 											cout << "TTL berhasil dirubah!";
 											sleep(3);
@@ -382,7 +458,7 @@ int main(){
 											switch(choice){
 												case 1:
 													{
-														for (int i = 0; i < recMatkul.size(); i++){
+														for (long long unsigned int i = 0; i < recMatkul.size(); i++){
 															cout << recMatkul[i].getIdMatkul() << ". Nama Matkul : " << recMatkul[i].getMatkul() << endl << endl;
 														}
 														bool flagMatkul = true;
@@ -478,12 +554,13 @@ int main(){
 					}
 					int pilihan;
 					bool flag = true;
-					system("cls || clear");
-					for (int i = 0; i < recDosen.size(); i++){
-						cout << recDosen[i].getId() << ". Nama Dosen : " << recDosen[i].getNama() << endl;
-						cout << "NRP : " << recDosen[i].getNPP() << endl << endl;
-					}
 					while (flag){
+						system("cls || clear");
+						for (long long unsigned int i = 0; i < recDosen.size(); i++){
+							cout << recDosen[i].getId() << ". Nama Dosen : " << recDosen[i].getNama() << endl;
+							cout << "   NPP : " << recDosen[i].getNPP() << endl << endl;
+						}
+						
 						cout << "Masukkan ID Dosen yang ingin dilihat detailnya : "; cin >> noID;
 						system("cls || clear");
 						cout << recDosen[noID-1].getId() << ". Nama Dosen : " << recDosen[noID-1].getNama() << endl;
@@ -527,7 +604,8 @@ int main(){
 											cout << "Masukkan nama baru : ";
 											cin.ignore(); getline(cin, nama);
 											recDosen[noID-1].setNama(nama);
-											cout << "Nama berhasil diubah!";
+											cout << "Nama berhasil diubah!" << endl;
+											sleep(3);
 											uhuk1 = false;
 										}
 										break;
@@ -536,16 +614,27 @@ int main(){
 											cout << "Masukkan NPP baru : ";
 											cin.ignore(); cin >> npp;
 											recDosen[noID-1].setNPP(npp);
-											cout << "NRP berhasil dirubah!";
+											cout << "NRP berhasil dirubah!" << endl;
+											sleep(3);
 											uhuk1 = false;
 										}
 										break;
 									case 3:
 										{
-											cout << "Masukkan TTL baru (dd mm yy) : ";
-											cin.ignore(); cin >> dd >> mm >> yy;
+											bool flagTTL = true;
+											while (flagTTL){
+												cout << "Masukkan TTL (dd mm yy) : "; cin >> dd >> mm >> yy; cout << endl;
+
+												if (validasiTanggal(dd, mm, yy)){
+													flagTTL = false;
+												}else{
+													cout << "TTL yang anda masukkan tidak valid!" << endl;
+													continue;
+												}
+											}
 											recDosen[noID-1].setTglLahir(dd,mm,yy);
-											cout << "TTL berhasil dirubah!";
+											cout << "TTL berhasil dirubah!" << endl;
+											sleep(3);
 											uhuk1 = false;
 										}
 										break;
@@ -554,16 +643,18 @@ int main(){
 											cout << "Masukkan departemen baru : ";
 											cin.ignore(); getline(cin, departemen);
 											recDosen[noID-1].setDepartemen(departemen);
-											cout << "Departemen berhasil diubah!";
+											cout << "Departemen berhasil diubah!" << endl;
+											sleep(3);
 											uhuk1 = false;
 										}
 										break;
 									case 5:
 										{
 											cout << "Masukkan pendidikan terakhir baru : ";
-											cin.ignore(); cin >> pendidikan;
+											cin.ignore(); getline(cin, pendidikan);
 											recDosen[noID-1].setPendidikan(pendidikan);
-											cout << "Pendidikan terakhir berhasil diubah!";
+											cout << "Pendidikan terakhir berhasil diubah!" << endl;
+											sleep(3);
 											uhuk1 = false;
 										}
 										break;
@@ -599,12 +690,12 @@ int main(){
 					}
 					int pilihan;
 					bool flag = true;
-					system("cls || clear");
-					for (int i = 0; i < recTendik.size(); i++){
-						cout << recTendik[i].getId() << ". Nama Tendik : " << recTendik[i].getNama() << endl;
-						cout << "NPP : " << recTendik[i].getNPP() << endl << endl;
-					}
 					while (flag){
+						system("cls || clear");
+						for (long long unsigned int i = 0; i < recTendik.size(); i++){
+							cout << recTendik[i].getId() << ". Nama Tendik : " << recTendik[i].getNama() << endl;
+							cout << "   NPP : " << recTendik[i].getNPP() << endl << endl;
+						}
 						cout << "Masukkan ID Tendik yang ingin dilihat detailnya : "; cin >> noID;
 						system("cls || clear");
 						cout << recTendik[noID-1].getId() << ". Nama Tendik : " << recTendik[noID-1].getNama() << endl;
@@ -663,8 +754,17 @@ int main(){
 										break;
 									case 3:
 										{
-											cout << "Masukkan TTL baru (dd mm yy) : ";
-											cin.ignore(); cin >> dd >> mm >> yy;
+											bool flagTTL = true;
+											while (flagTTL){
+												cout << "Masukkan TTL (dd mm yy) : "; cin >> dd >> mm >> yy; cout << endl;
+
+												if (validasiTanggal(dd, mm, yy)){
+													flagTTL = false;
+												}else{
+													cout << "TTL yang anda masukkan tidak valid!" << endl;
+													continue;
+												}
+											}
 											recTendik[noID-1].setTglLahir(dd,mm,yy);
 											cout << "TTL berhasil dirubah!" << endl;
 											sleep(3);
@@ -744,7 +844,7 @@ int main(){
 					bool flag = true;
 					while (flag){
 						system("cls || clear");
-						for (int i = 0; i < recMatkul.size(); i++){
+						for (long long unsigned int i = 0; i < recMatkul.size(); i++){
 							cout << recMatkul[i].getIdMatkul() << ". Nama Matkul : " << recMatkul[i].getMatkul() << endl << endl;
 						}
 
@@ -827,9 +927,7 @@ int main(){
 							defaultError();
 							break;
 						}
-
 					}
-					
 				}
 				break;
 			case 9:
