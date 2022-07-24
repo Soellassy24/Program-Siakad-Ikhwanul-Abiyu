@@ -1,10 +1,11 @@
 #include <iostream>
 #include "include/matkul.hpp"
 
+matkul::matkul(){}
+
 matkul::matkul(int idMatkul, std::string namaMatkul, std::string kodeMatkul, int sksMatkul)
 		: idMatkul(idMatkul), namaMatkul(namaMatkul), kodeMatkul(kodeMatkul), sksMatkul(sksMatkul)
-{
-}
+{}
 void matkul::setIdMatkul(int idMatkul){
     this->idMatkul = idMatkul;
 }

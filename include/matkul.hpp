@@ -1,8 +1,6 @@
 #ifndef __MATKUL_HPP__
 #define __MATKUL_HPP__
 
-#include <iostream>
-#include <vector>
 class matkul{
     private:
         int idMatkul;
@@ -10,6 +8,7 @@ class matkul{
         std::string kodeMatkul;
         int sksMatkul;
     public:
+        matkul();
         matkul(int idMatkul, std::string namaMatkul, std::string kodeMatkul, int sksMatkul);
 
         int getIdMatkul();
@@ -23,6 +22,8 @@ class matkul{
 
         int getSKSMatkul();
         void setSKSMatkul(int sksMatkul);
+
+        void middleErase(int index);
 };
 
 #endif

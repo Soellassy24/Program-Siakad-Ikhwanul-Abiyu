@@ -2,16 +2,15 @@
 #include <vector>
 #include <set>
 #include "include/mahasiswa.hpp"
+#include "include/matkul.hpp"
 
 
-mahasiswa::mahasiswa(int id, std::string nama, int dd, int mm, int yy, std::string nrp, std::string departemen, int tahunmasuk, int semesterke, std::set<std::string> matkulDiambil)
-		: person(id, nama, dd, mm, yy), nrp(nrp), departemen(departemen), tahunmasuk(tahunmasuk), semesterke(semesterke), matkulDiambil(matkulDiambil)
+mahasiswa::mahasiswa(int id, std::string nama, int dd, int mm, int yy, std::string nrp, std::string departemen, int tahunmasuk, int semesterke, int skslulus, int jumlahMatkul)
+		: person(id, nama, dd, mm, yy), nrp(nrp), departemen(departemen), tahunmasuk(tahunmasuk), semesterke(semesterke), skslulus(skslulus), jumlahMatkul(jumlahMatkul)
 {
-	// this->ipk = 0.0;
-	// //this->semesterke = 1;
-	// this->skslulus = 0;
-
-	// this->ips = std::vector<float>(14,0);
+	this->ipk = 0.0;
+	this->ips = std::vector<float>(14,0);
+	this->jumlahMatkul = 0;
 }
 
 std::string mahasiswa::getNRP(){
@@ -50,49 +49,37 @@ int mahasiswa::getSemester()
 	return this->semesterke;
 }
 
-void mahasiswa::setMatkulDiambil(std::string matkul){
-	matkulDiambil.insert(matkul);
+// void mahasiswa::setMatkulDiambil(std::string matkul){
+// 	matkulDiambil.insert(matkul);
+// }
+// std::set<std::string> mahasiswa::getMatkulDiambil(){
+// 	return this->matkulDiambil;
+// }
+
+void mahasiswa::setSKSLulus(int skslulus){
+	this->skslulus = skslulus;
 }
-std::set<std::string> mahasiswa::getMatkulDiambil(){
-	return this->matkulDiambil;
+
+int mahasiswa::getSKSLulus(){
+	return this->skslulus;
 }
 
-// void mahasiswa::setSKSLulus(int skslulus)
-// {
-// 	this->skslulus = skslulus;
-// }
+void mahasiswa::setIPS(int semester, float ips){
+	// semester mulai dari 1
+	if (semester < 15) {
+		this->ips[semester-1] = ips;
+	}
+}
 
-// int mahasiswa::getSKSLulus()
-// {
-// 	return this->skslulus;
-// }
+float mahasiswa::getIPS(int semester){
+	if (semester < 15)
+		return this->ips[semester-1];
 
-// void mahasiswa::hitungIPK()
-// {
+	return -1.0;
+}
 
-// }
-
-
-
-// void mahasiswa::setIPS(int semester, float ips)
-// {
-// 	// semester mulai dari 1
-// 	if (semester < 15) {
-// 		this->ips[semester-1] = ips;
-// 		this->hitungIPK();
-// 	}
-// }
-
-// float mahasiswa::getIPS(int semester)
-// {
-// 	if (semester < 15)
-// 		return this->ips[semester-1];
-
-// 	return -1.0;
-// }
-// std::vector<float> mahasiswa::getAllIPS()
-// {
-// 	return this->ips;
-// }
+std::vector<float> mahasiswa::getAllIPS(){
+	return this->ips;
+}
 
 
