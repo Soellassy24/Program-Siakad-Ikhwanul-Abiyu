@@ -14,7 +14,8 @@
 <li>9. Error throw (with error message)</li>
 
 <h5>How to use?</h5>
-<li>Clone this repository manually or download as zip file</li>
+<li>Download the executable file at 'release', the file named as "sim 2.0.0"</li>
+<li>Or clone this repository manually or download as zip file</li>
 <li>Type on your terminal</li>
 <br>
 
