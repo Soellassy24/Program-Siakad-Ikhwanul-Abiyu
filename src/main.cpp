@@ -316,7 +316,9 @@ int main(){
 									ipk += totalIPK / (recMhs[noID-1].getSemester());
 									cout << "IP Kumulatif : " << ipk << endl;
 									
-									cout << "Press any key to continue..." << endl; system("pause || read");
+									do {
+     									cout << '\n' << "Press the Enter key to continue.";
+   									} while (cin.get() != '\n');
 								}
 								break;
 							case 4:
@@ -970,7 +972,9 @@ int main(){
 
 					ipk += totalIPK / (recMhs[inputIDMhs-1].getSemester());
 					cout << "IP Kumulatif : " << ipk << endl;				
-					system("pause || read");
+					do {
+     					cout << '\n' << "Press the Enter key to continue.";
+   					} while (cin.get() != '\n');
 				}
 				break;
 			case 2:
@@ -987,7 +991,10 @@ int main(){
 						sksDitempuh += recMhs[noID-1].matkulTerambil[i].getSKSMatkul();
 					}
 					cout << endl << "SKS yang sedang anda tempuh : " << sksDitempuh << " sks" << endl;
-					system("pause || read");
+
+					do {
+     					cout << '\n' << "Press the Enter key to continue.";
+   					} while (cin.get() != '\n');
 				}
 				break;
 			case 3:
@@ -1008,7 +1015,9 @@ int main(){
 		system("cls || clear");
 		cout << "Menu dosen belum dibuat, silahkan kembali ke menu utama." << endl;
 		sleep(3);
-		system("pause || read");
+		do {
+     		cout << '\n' << "Press the Enter key to continue.";
+		} while (cin.get() != '\n');
 		goto program;
 	}
 	
@@ -1016,7 +1025,9 @@ int main(){
 		system("cls || clear");
 		cout << "Menu tendik belum dibuat, silahkan kembali ke menu utama." << endl;
 		sleep(3);
-		system("pause || read");
+		do {
+     		cout << '\n' << "Press the Enter key to continue.";
+		} while (cin.get() != '\n');
 		goto program;
 	}
 	return 0;

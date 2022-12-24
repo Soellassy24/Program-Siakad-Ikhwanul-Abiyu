@@ -1,9 +1,27 @@
-CXX?=g++ 
-CXXFLAGS+= --std=c++17 -O3 -Wall -Wextra -I.
-SOURCES=src/main.cpp src/person.cpp src/mahasiswa.cpp src/dosen.cpp src/tendik.cpp src/matkul.cpp
+CXX=g++
+CXXFLAGS+= -std=c++17 -O3 -Wall -Wextra -I. 
 
-src/%.o: src/%.cpp 
-	$(CXX) $(CXXFLAGS) -c -o $@ $<
+OUTPUT=sim
 
-sim: $(SOURCES:.cpp=.o)
-	$(CXX) $(CXXFLAGS) -o $@ $^
+SOURCEDIR=src
+OBJECTSDIR=obj
+
+SOURCES=$(wildcard $(SOURCEDIR)/*.cpp)
+OBJECTS=$(SOURCES:$(SOURCEDIR)/%.cpp=$(OBJECTSDIR)/%.o)
+
+$(OUTPUT): $(OBJECTS) #Final Output
+	$(CXX) $^ $(CXXFLAGS) -o $@
+
+$(OBJECTSDIR)/%.o: $(SOURCEDIR)/%.cpp #Compile to object
+	$(CXX) $< $(CXXFLAGS) -c -o $@
+
+$(OBJECTS): | $(OBJECTSDIR)
+
+$(OBJECTSDIR):
+	mkdir $@
+
+clean:
+	del $(OBJECTSDIR)\*.o $(OUTPUT).exe
+
+%.exe: %.cpp
+	$(CXX) $< $(CXXFLAGS) -o $@
