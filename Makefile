@@ -1,27 +1,15 @@
-CXX=g++
-CXXFLAGS+= -std=c++17 -O3 -Wall -Wextra -I. 
+CXX?=g++ 
+CXXFLAGS+= --std=c++17 -O3 -I. -static-libgcc -static-libstdc++ -static 
+SOURCES= $(wildcard src/*.cpp)
 
-OUTPUT=sim
+src/%.o: src/%.cpp 
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-SOURCEDIR=src
-OBJECTSDIR=obj
-
-SOURCES=$(wildcard $(SOURCEDIR)/*.cpp)
-OBJECTS=$(SOURCES:$(SOURCEDIR)/%.cpp=$(OBJECTSDIR)/%.o)
-
-$(OUTPUT): $(OBJECTS) #Final Output
-	$(CXX) $^ $(CXXFLAGS) -o $@
-
-$(OBJECTSDIR)/%.o: $(SOURCEDIR)/%.cpp #Compile to object
-	$(CXX) $< $(CXXFLAGS) -c -o $@
-
-$(OBJECTS): | $(OBJECTSDIR)
-
-$(OBJECTSDIR):
-	mkdir $@
+sim: $(SOURCES:.cpp=.o)
+	$(CXX) $(CXXFLAGS) -o $@ $^
 
 clean:
-	del $(OBJECTSDIR)\*.o $(OUTPUT).exe
-
-%.exe: %.cpp
-	$(CXX) $< $(CXXFLAGS) -o $@
+	rm src/*.o
+	
+cleanwin:
+	del src\*.o
